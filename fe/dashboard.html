@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GradeTrack Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- Header -->
+        <header class="dashboard-header">
+
+            <div>
+<h1>GradeTrack</h1>
+<p>Student Performance & Analytics Platform</p>
+            </div>
+
+            <div class="header-actions">
+                <button
+                    class="analytics-btn"
+                    onclick="window.location.href='analytics.html'">
+                    View Analytics
+                </button>
+
+                <button
+                    id="logoutBtn"
+                    class="logout-btn">
+                    Logout
+                </button>
+            </div>
+
+        </header>
+
+
+        <!-- Students Section -->
+        <section class="students-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Students</h2>
+                    <p>Search and manage student records</p>
+                </div>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search by ID or school..."
+                >
+            </div>
+
+            <div id="students"></div>
+
+        </section>
+
+
+        <!-- Add / Edit Student -->
+        <section class="student-form-section">
+
+            <h2 id="formTitle">Add Student</h2>
+
+            <form id="studentForm">
+
+                <div class="form-grid">
+
+                    <input type="text" id="school"
+                        placeholder="School" required>
+
+                    <input type="text" id="gender"
+                        placeholder="Gender" required>
+
+                    <input type="number" id="age"
+                        placeholder="Age" required>
+
+                    <input type="text" id="address"
+                        placeholder="Address" required>
+
+                    <input type="number" id="study_time"
+                        placeholder="Study Time" required>
+
+                    <input type="number" id="failures"
+                        placeholder="Failures" required>
+
+                    <input type="text" id="internet"
+                        placeholder="Internet (yes/no)" required>
+
+                    <input type="text" id="activities"
+                        placeholder="Activities (yes/no)" required>
+
+                    <input type="number" id="absences"
+                        placeholder="Absences" required>
+
+                    <input type="number" id="grade_1"
+                        placeholder="Grade 1" required>
+
+                    <input type="number" id="grade_2"
+                        placeholder="Grade 2" required>
+
+                    <input type="number" id="final_grade"
+                        placeholder="Final Grade" required>
+
+                </div>
+
+                <button
+                    type="submit"
+                    id="submitStudentBtn"
+                    class="primary-btn">
+                    Add Student
+                </button>
+
+            </form>
+
+            <p id="studentMessage"></p>
+
+        </section>
+
+    </div>
+
+
+    <script src="dashboard.js"></script>
+
+</body>
+
+</html>

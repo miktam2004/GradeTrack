@@ -1,0 +1,729 @@
+/* =========================================================
+   GradeTrack — design tokens
+   Base: near-black, blue-tinted (#0B0D12) so it reads as ink,
+   not pure #000. Each panel carries its own accent glow —
+   "mixed color plates" rather than one repeated grey card.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* base surfaces */
+    --bg: #0b0d12;
+    --bg-soft: #10131a;
+    --panel: rgba(255, 255, 255, 0.035);
+    --panel-border: rgba(255, 255, 255, 0.08);
+    --panel-border-strong: rgba(255, 255, 255, 0.14);
+
+    /* text */
+    --text: #e8eaf0;
+    --text-dim: #9aa3b2;
+    --text-faint: #6b7280;
+
+    /* accents — each has a semantic job, not decoration */
+    --indigo: #6366f1;
+    --indigo-soft: rgba(99, 102, 241, 0.16);
+    --emerald: #10b981;
+    --emerald-soft: rgba(16, 185, 129, 0.16);
+    --amber: #f59e0b;
+    --amber-soft: rgba(245, 158, 11, 0.16);
+    --sky: #38bdf8;
+    --sky-soft: rgba(56, 189, 248, 0.16);
+    --rose: #fb7185;
+    --rose-soft: rgba(251, 113, 133, 0.16);
+
+    --radius: 14px;
+    --radius-sm: 9px;
+    --shadow-lift: 0 20px 44px rgba(0, 0, 0, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    min-height: 100vh;
+}
+
+h1, h2, h3 {
+    font-family: 'Sora', 'Inter', sans-serif;
+    letter-spacing: -0.01em;
+}
+
+/* ambient background: fixed low-opacity color fields behind everything,
+   the one "mixed color" cue that carries through the whole app */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(680px 480px at 8% -6%, rgba(99, 102, 241, 0.16), transparent 60%),
+        radial-gradient(620px 460px at 100% 8%, rgba(56, 189, 248, 0.12), transparent 60%),
+        radial-gradient(720px 560px at 50% 118%, rgba(16, 185, 129, 0.10), transparent 60%),
+        var(--bg);
+}
+
+a { color: inherit; }
+
+::selection {
+    background: var(--indigo);
+    color: #fff;
+}
+
+:focus-visible {
+    outline: 2px solid var(--sky);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+
+/* =========================================================
+   Layout shell
+   ========================================================= */
+
+.dashboard {
+    width: 94%;
+    max-width: 1400px;
+    margin: 30px auto;
+    animation: rise-in 0.5s ease both;
+}
+
+@keyframes rise-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* =========================================================
+   Sticky header
+   ========================================================= */
+
+.dashboard-header {
+    position: sticky;
+    top: 14px;
+    z-index: 40;
+
+    background: rgba(16, 19, 26, 0.72);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+
+    padding: 22px 28px;
+    border-radius: var(--radius);
+    border: 1px solid var(--panel-border);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    box-shadow: var(--shadow-lift);
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.dashboard-header.is-scrolled {
+    border-color: var(--panel-border-strong);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--indigo-soft);
+}
+
+.dashboard-header h1 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #fff, var(--sky) 120%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.dashboard-header p {
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 14px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.header-actions button {
+    width: auto;
+    margin: 0;
+    padding: 11px 20px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.analytics-btn {
+    background: linear-gradient(135deg, var(--indigo), #4f46e5);
+    color: white;
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+}
+
+.logout-btn {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    border: 1px solid var(--panel-border);
+}
+
+.analytics-btn:hover { filter: brightness(1.08); }
+.logout-btn:hover { background: rgba(255, 255, 255, 0.1); }
+
+
+/* =========================================================
+   Buttons — base + bubble/ripple click effect
+   effects.js injects a .ripple-bubble span on click;
+   every button gets the positioning it needs to contain it.
+   ========================================================= */
+
+button {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+.ripple-bubble {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.45);
+    transform: scale(0);
+    opacity: 0.55;
+    animation: bubble-pop 0.6s ease-out forwards;
+    z-index: 5;
+}
+
+@keyframes bubble-pop {
+    to {
+        transform: scale(2.6);
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
+   Sections — each a glass "plate" on the dark field
+   ========================================================= */
+
+.students-section,
+.student-form-section {
+    background: var(--panel);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin-top: 22px;
+    padding: 26px;
+    border-radius: var(--radius);
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--shadow-lift);
+    transition: border-color 0.2s ease;
+}
+
+.students-section { border-top: 2px solid var(--indigo); }
+.student-form-section { border-top: 2px solid var(--emerald); }
+
+.students-section:hover,
+.student-form-section:hover {
+    border-color: var(--panel-border-strong);
+}
+
+
+/* Section headings */
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.section-heading h2,
+.student-form-section h2 {
+    margin-top: 0;
+    font-size: 19px;
+    color: var(--text);
+}
+
+.section-heading p {
+    margin-top: -4px;
+    color: var(--text-dim);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   Search input
+   ========================================================= */
+
+#searchInput {
+    width: 300px;
+    padding: 12px 15px;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-sm);
+    outline: none;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#searchInput::placeholder { color: var(--text-faint); }
+
+#searchInput:focus {
+    border-color: var(--sky);
+    box-shadow: 0 0 0 3px var(--sky-soft);
+}
+
+
+/* =========================================================
+   Tables
+   ========================================================= */
+
+#students {
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+}
+
+table {
+    width: 100%;
+    min-width: 1000px;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 13px 12px;
+    border-bottom: 1px solid var(--panel-border);
+    text-align: center;
+    font-size: 14px;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    background: var(--bg-soft);
+    font-weight: 600;
+    color: var(--text-dim);
+    z-index: 2;
+}
+
+tbody tr {
+    transition: background 0.15s ease;
+}
+
+tbody tr:hover {
+    background: rgba(99, 102, 241, 0.07);
+}
+
+/* action buttons rendered by dashboard.js inside table cells */
+td button {
+    margin: 0 3px;
+    padding: 7px 13px;
+    border-radius: 7px;
+    border: 1px solid var(--panel-border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+td button:first-of-type:hover {
+    background: var(--indigo-soft);
+    border-color: var(--indigo);
+    color: #c7d2fe;
+}
+
+td button:last-of-type:hover {
+    background: var(--rose-soft);
+    border-color: var(--rose);
+    color: #ffd7dd;
+}
+
+
+/* =========================================================
+   Add / Edit form
+   ========================================================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form-grid input {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-sm);
+    outline: none;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-grid input::placeholder { color: var(--text-faint); }
+
+.form-grid input:focus {
+    border-color: var(--emerald);
+    box-shadow: 0 0 0 3px var(--emerald-soft);
+}
+
+.primary-btn {
+    width: 200px;
+    padding: 13px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--emerald), #059669);
+    color: white;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.primary-btn:hover { filter: brightness(1.08); }
+
+#studentMessage {
+    margin-top: 15px;
+    font-weight: 600;
+    color: var(--emerald);
+}
+
+
+/* =========================================================
+   Analytics page
+   ========================================================= */
+
+.analytics-card,
+.analytics-section {
+    background: var(--panel);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 26px;
+    margin: 20px 0;
+    border-radius: var(--radius);
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--shadow-lift);
+}
+
+.analytics-card {
+    text-align: center;
+    border-top: 2px solid var(--sky);
+}
+
+.analytics-value {
+    font-size: 42px;
+    font-weight: 700;
+    margin-top: 10px;
+    font-family: 'Sora', sans-serif;
+    background: linear-gradient(90deg, var(--sky), #fff 140%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.analytics-section { overflow-x: auto; }
+.analytics-section:nth-of-type(1) { border-top: 2px solid var(--amber); }
+.analytics-section:nth-of-type(2) { border-top: 2px solid var(--indigo); }
+.analytics-section:nth-of-type(3) { border-top: 2px solid var(--rose); }
+
+.analytics-section table { min-width: 600px; }
+
+.analytics-section th,
+.analytics-section td {
+    padding: 11px;
+    border: 1px solid var(--panel-border);
+    text-align: center;
+}
+
+.analytics-section th {
+    position: static;
+    font-weight: 600;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--panel-border);
+    margin: 20px 0;
+}
+
+
+/* Absence statistics */
+
+.absence-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.stat-box {
+    padding: 22px;
+    text-align: center;
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.stat-box:nth-child(1) { border-color: var(--emerald); }
+.stat-box:nth-child(2) { border-color: var(--rose); }
+.stat-box:nth-child(3) { border-color: var(--sky); }
+.stat-box:nth-child(4) { border-color: var(--amber); }
+
+.stat-box h3 {
+    margin: 0 0 10px;
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 600;
+}
+
+.stat-box p {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    font-family: 'Sora', sans-serif;
+}
+
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        position: static;
+    }
+    .section-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    #searchInput { width: 100%; }
+    .form-grid { grid-template-columns: repeat(2, 1fr); }
+    .absence-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .dashboard { width: 96%; margin: 15px auto; }
+    .dashboard-header { padding: 20px; }
+    .dashboard-header h1 { font-size: 21px; }
+    .header-actions { width: 100%; }
+    .header-actions button { flex: 1; }
+    .students-section,
+    .student-form-section { padding: 18px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .primary-btn { width: 100%; }
+    .absence-grid { grid-template-columns: 1fr; }
+}
+
+
+/* =========================================================
+   Login page
+   ========================================================= */
+
+.login-page {
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* drifting color fields behind the login card — the one
+   deliberately "bold" moment in the whole app */
+.login-page::before,
+.login-page::after {
+    content: "";
+    position: absolute;
+    width: 46vmax;
+    height: 46vmax;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.35;
+    z-index: 0;
+    animation: drift 16s ease-in-out infinite alternate;
+}
+
+.login-page::before {
+    background: var(--indigo);
+    top: -14vmax;
+    left: -12vmax;
+}
+
+.login-page::after {
+    background: var(--emerald);
+    bottom: -16vmax;
+    right: -12vmax;
+    animation-delay: -8s;
+}
+
+@keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(4vmax, 3vmax) scale(1.12); }
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(16, 19, 26, 0.78);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    padding: 42px 38px;
+    border-radius: 18px;
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--shadow-lift);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    animation: card-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes card-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.login-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--indigo), var(--sky));
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Sora', sans-serif;
+    box-shadow: 0 10px 24px rgba(99, 102, 241, 0.4);
+}
+
+.login-container h1 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.login-container p.dev {
+    margin: 8px 0 0;
+    color: var(--text-dim);
+    font-size: 14px;
+}
+
+.login-subtitle {
+    margin: 8px 0 28px;
+    color: var(--text-faint);
+    font-size: 14px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+}
+
+.login-container input {
+    width: 100%;
+    padding: 13px 14px;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-container input::placeholder { color: var(--text-faint); }
+
+.login-container input:focus {
+    border-color: var(--sky);
+    box-shadow: 0 0 0 3px var(--sky-soft);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 8px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--indigo), #4f46e5);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(99, 102, 241, 0.38);
+}
+
+.login-btn:hover { filter: brightness(1.08); }
+
+#message {
+    min-height: 20px;
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rose);
+}
+
+.login-footer {
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--panel-border);
+    color: var(--text-faint);
+    font-size: 12px;
+}
+
+@media (max-width: 500px) {
+    .login-container { padding: 32px 24px; }
+    .login-container h1 { font-size: 21px; }
+    .login-page::before,
+    .login-page::after { width: 70vmax; height: 70vmax; }
+}

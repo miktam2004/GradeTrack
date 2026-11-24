@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <title>GradeTrack Analytics</title>
+ 
+    <link rel="stylesheet" href="style.css">
+</head>
+ 
+<body>
+ 
+    <div class="dashboard">
+ 
+        <header class="dashboard-header">
+            <div>
+                <h1>GradeTrack Analytics</h1>
+                <p>A closer look at grades, schools, and attendance</p>
+            </div>
+ 
+            <div class="header-actions">
+                <button class="logout-btn" onclick="window.location.href='dashboard.html'">
+                    Back to Dashboard
+                </button>
+            </div>
+        </header>
+ 
+        <div class="analytics-card">
+ 
+            <h2>Average Final Grade</h2>
+ 
+            <div id="averageGrade" class="analytics-value">
+                Loading...
+            </div>
+ 
+        </div>
+ 
+ 
+        <div class="analytics-section">
+ 
+            <h2>Top Students</h2>
+ 
+            <div id="topStudents">
+                Loading...
+            </div>
+ 
+        </div>
+ 
+ 
+        <div class="analytics-section">
+ 
+            <h2>School Statistics</h2>
+ 
+            <div id="schoolStats">
+                Loading...
+            </div>
+ 
+        </div>
+ 
+ 
+        <div class="analytics-section">
+ 
+            <h2>Absence Statistics</h2>
+ 
+            <div id="absenceStats">
+                Loading...
+            </div>
+ 
+        </div>
+ 
+    </div>
+ 
+    <script src="analytics.js"></script>
+    <script src="effects.js"></script>
+ 
+</body>
+ 
+</html>
+ 
